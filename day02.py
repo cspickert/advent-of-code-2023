@@ -19,10 +19,10 @@ class Solution(base.Solution):
     def part1(self, data):
         return sum(
             game_id
-            for game_id, rounds in data
+            for game_id, game in data
             if all(
                 amount <= {"red": 12, "green": 13, "blue": 14}[color]
-                for game_round in rounds
+                for game_round in game
                 for color, amount in game_round.items()
             )
         )

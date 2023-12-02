@@ -1,5 +1,7 @@
-import base
 import regex as re
+
+import base
+
 
 class Solution(base.Solution):
     def load_data(self, input_str):
@@ -12,7 +14,9 @@ class Solution(base.Solution):
         return sum(self.calibration_values(data, replace_words=True))
 
     def calibration_values(self, data, replace_words=False):
-        line_digits = [self.calibration_values_line(line, replace_words) for line in data]
+        line_digits = [
+            self.calibration_values_line(line, replace_words) for line in data
+        ]
         return [int(l[0] + l[-1]) for l in line_digits]
 
     def calibration_values_line(self, line, replace_words):
@@ -29,7 +33,9 @@ class Solution(base.Solution):
             "ten": "10",
         }
         if replace_words:
-            values_re = re.compile(r"one|two|three|four|five|six|seven|eight|nine|ten|\d")
+            values_re = re.compile(
+                r"one|two|three|four|five|six|seven|eight|nine|ten|\d",
+            )
         else:
             values_re = re.compile(r"\d")
         values = values_re.findall(line, overlapped=True)

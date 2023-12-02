@@ -1,6 +1,7 @@
-import base
 import operator
 from functools import reduce
+
+import base
 
 
 class Solution(base.Solution):

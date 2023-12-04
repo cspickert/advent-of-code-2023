@@ -10,7 +10,11 @@ def run_part(request):
     def fn():
         day_module = str(request.function.__module__).split("_")[-1]
         part_name = request.function.__name__.split("_")[-1]
-        input_path = Path(__file__).parent / "input" / day_module / f"{part_name}.txt"
+        input_path = Path(__file__).parent / "input" / f"{day_module}.txt"
+        if not input_path.exists():
+            input_path = (
+                Path(__file__).parent / "input" / day_module / f"{part_name}.txt"
+            )
         runner = Runner(day_module, input_path)
         return runner.run_method(part_name)
 

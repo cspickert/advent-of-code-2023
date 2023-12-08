@@ -24,18 +24,18 @@ class Solution(base.Solution):
         ]
 
     def parse_hand(self, hand, jokers):
-        card_mapping = self.card_mapping(jokers)
-        counts = Counter(hand)
         if jokers:
-            try:
-                (best_card, _), *_ = Counter(hand.replace("J", "")).most_common()
-            except ValueError:
-                best_card = "A"
+            other_cards = hand.replace("J", "")
+            if other_cards:
+                (best_card, _), *_ = Counter(other_cards).most_common()
+            else:
+                best_card = "J"
             best_hand = hand.replace("J", best_card)
-            counts = Counter(best_hand)
+        else:
+            best_hand = hand
         return (
-            tuple(value for _, value in counts.most_common()),
-            tuple(card_mapping[k] for k in hand),
+            tuple(value for _, value in Counter(best_hand).most_common()),
+            tuple(self.card_mapping(jokers)[k] for k in hand),
         )
 
     def card_mapping(self, jokers):

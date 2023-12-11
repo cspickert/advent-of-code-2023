@@ -9,7 +9,7 @@ class Solution(base.Solution):
         return sum(self.get_next_value(sequence) for sequence in data)
 
     def part2(self, data):
-        pass
+        return sum(self.get_prev_value(sequence) for sequence in data)
 
     # Helpers
 
@@ -18,6 +18,12 @@ class Solution(base.Solution):
             return 0
         diffs = self.get_diff_sequence(sequence)
         return sequence[-1] + self.get_next_value(diffs)
+
+    def get_prev_value(self, sequence):
+        if all(value == 0 for value in sequence):
+            return 0
+        diffs = self.get_diff_sequence(sequence)
+        return sequence[0] - self.get_prev_value(diffs)
 
     def get_diff_sequence(self, sequence):
         return [b - a for a, b in zip(sequence, sequence[1:])]

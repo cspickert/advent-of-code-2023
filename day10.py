@@ -23,9 +23,11 @@ class Solution(base.Solution):
         queue = [(0, start)]
         while queue:
             dist, coords = heappop(queue)
-            for next_coords in self.get_next_coords(data, coords):
+            all_next_coords = list(self.get_next_coords(data, coords))
+            assert len(all_next_coords) in (0, 2), (coords, all_next_coords)
+            for next_coords in all_next_coords:
                 next_dist = dist + 1
-                if next_coords not in distances or next_dist < distances[next_coords]:
+                if next_coords not in distances or next_dist <= distances[next_coords]:
                     distances[next_coords] = next_dist
                     heappush(queue, (next_dist, next_coords))
         return distances
@@ -37,12 +39,14 @@ class Solution(base.Solution):
                     return row, col
 
     def get_next_coords(self, data, coords):
-        for row, col in self.get_next_coords_raw(data, coords):
+        for row, col in self.get_next_coords_unchecked(data, coords):
             if row in range(len(data)) and col in range(len(data[row])):
-                if data[row][col] not in "S.":
+                # Ensure that the pipe connection is bidirectional between the
+                # cur/next coords
+                if coords in self.get_next_coords_unchecked(data, (row, col)):
                     yield row, col
 
-    def get_next_coords_raw(self, data, coords):
+    def get_next_coords_unchecked(self, data, coords):
         r, c = coords
         match data[r][c]:
             case "|":
